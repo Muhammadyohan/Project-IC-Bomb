@@ -26,14 +26,9 @@ void reset()
   sendCommand(0x40); // set auto increment mode
   digitalWrite(strobe, LOW);
   shiftOut(data, clock, LSBFIRST, 0xc0);   // set starting address to 0
-  for (uint8_t i = 0; i < 10; i++)
+  for(uint8_t i = 0; i < 16; i++)
   {
-    shiftOut(data, clock, LSBFIRST, 0x00);   // set 7seg0-7seg4 and led1-led5 to 0
-  }
-  shiftOut(data, clock, LSBFIRST, 0x40);   // set 7seg5 to 0
-  for (uint8_t j = 0; j < 5; j++)
-  {
-    shiftOut(data, clock, LSBFIRST, 0x00);   // set led6-led8 and 7seg6-7seg7 to 0
+    shiftOut(data, clock, LSBFIRST, 0x00);
   }
   digitalWrite(strobe, HIGH);
 }
