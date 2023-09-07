@@ -13,5 +13,3 @@ void DISP_CLOCK(uint8_t hour, uint8_t minute)
   DISP_NUM_to_7SEG(4, hUnit);
   DISP_NUM_to_7SEG(3, hTen);
 }
-
-//Hello
