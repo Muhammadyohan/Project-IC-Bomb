@@ -1,70 +1,55 @@
 #include "ds1307andDHT.h"
+#include "readSwitch.h"
 
-//PIN of Switches
-#define SW1 8
-#define SW2 9
-#define SW3 10
+//Variables for stroring value from readSwitch()
+uint8_t checkSw;
+uint8_t swVal;
 
-//Variable for Read Switch Function
-int swPreviousTime = 0;
-uint8_t sw1 = 1;
-uint8_t sw2 = 1;
-uint8_t sw3 = 1;
-uint8_t valSw;
-int checkSw;
+//Variables for parameter of dispMode()
+uint8_t dispModeVal = 1;
 
 void setup() {
+  //-------------begin tm1637--------------- 
   tm.init();
   //set brightness of tm1637 led; 0-7
   tm.set(2);
 
-  pinMode(SW1, INPUT);
-  pinMode(SW2, INPUT);
-  pinMode(SW3, INPUT);
+  //pin setup
+  pinMode(SW1_PIN, INPUT);
+  pinMode(SW2_PIN, INPUT);
+  pinMode(SW3_PIN, INPUT);
+
   Serial.begin(9600);
 }
 
 void loop() {
-  dispMode(2);
-}
-
-//read switch function
-//----------------------------**note** ---------------------------------
-//          this function doesn't work yet so don't call it
-bool readSwitch() 
-{
-  sw1 = digitalRead(SW1);
-  sw2 = digitalRead(SW2);
-  sw3 = digitalRead(SW3);
-
-  if(!sw1 || !sw2 || !sw3)
+  checkSw = readSwitch();
+  if (checkSw != 0) //Switch preesed
   {
-    if(millis() - swPreviousTime > 50)
+    swVal = checkSw;  //stored return value of readSwitch()
+    
+    switch (swVal)  //check if which switch is preesed
     {
-      swPreviousTime = millis();
-      sw1 = digitalRead(SW1);
-      sw2 = digitalRead(SW2);
-      sw3 = digitalRead(SW3);
-      if(!sw1)
-        Serial.println("sw1 preesed");
-        valSw = 1;
-        return true;
-      if(!sw2)
-        Serial.println("sw2 preesed");
-        valSw = 2;
-        return true;
-      if(!sw3)
-        Serial.println("sw3 preesed");
-        valSw = 3;
-        return true;
-      }
-      else
-      {
-        return false;
-      }
+    //if switch 1 preesed
+    //change display mode
+    case 1:
+      dispModeVal += 1;
+      if(dispModeVal > 3)
+        dispModeVal = 1;
+        Serial.print("display mode = ");
+        Serial.println(dispModeVal);
+        tm.clearDisplay();  //clear tm1637's 7-segment led display before change to other display mode
+      break;
+
+    case 2:
+      break;
+
+    case 3:
+      break;
+
+    default:
+      break;
+    }
   }
-  else
-  {
-    return false;
-  }
+  dispMode(dispModeVal);
 }
