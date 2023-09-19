@@ -36,9 +36,9 @@ void loop() {
       dispModeVal += 1;
       if(dispModeVal > 3)
         dispModeVal = 1;
-        Serial.print("display mode = ");
-        Serial.println(dispModeVal);
-        tm.clearDisplay();  //clear tm1637's 7-segment led display before change to other display mode
+      Serial.print("display mode = ");
+      Serial.println(dispModeVal);
+      tm.clearDisplay();  //clear tm1637's 7-segment led display before change to other display mode
       break;
 
     case 2:
