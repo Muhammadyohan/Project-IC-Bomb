@@ -96,7 +96,7 @@ void DISP_TEMP()
 
 //clock and temperature display function if display mode = 3
 //----------------------------**note** ---------------------------------
-//          this function doesn't work yet so don't call it
+//                    not sure if it work or not
 void DISP_CLOCK_TEMP()
 {
   //CLock Display Mode

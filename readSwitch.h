@@ -12,7 +12,7 @@ uint8_t sw3;
 
 //Read SW1 SW2 SW3 function
 //----------------------------**note** ---------------------------------
-//                     not sure it work or not
+//                    not sure if it work or not
 uint8_t readSwitch() 
 {
     sw1 = digitalRead(SW1_PIN);
