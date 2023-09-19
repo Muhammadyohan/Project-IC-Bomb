@@ -102,7 +102,6 @@ void DISP_CLOCK_TEMP()
   //CLock Display Mode
   if(dispClkMode)
   {
-    tm.clearDisplay();
     DISP_CLOCK();
     currentDispTime = millis();
 
