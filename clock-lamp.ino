@@ -1,5 +1,6 @@
 #include "ds1307andDHT.h"
 #include "readSwitch.h"
+#include "LEDdisp.h"
 
 //Variables for stroring value from readSwitch()
 uint8_t checkSw;
@@ -18,7 +19,10 @@ void setup() {
   pinMode(SW1_PIN, INPUT);
   pinMode(SW2_PIN, INPUT);
   pinMode(SW3_PIN, INPUT);
-
+  pinMode(RED, OUTPUT);
+  pinMOde(GREEN, OUTPUT);
+  pinMode(BLUE, OUTPUT);
+  
   Serial.begin(9600);
 }
 
