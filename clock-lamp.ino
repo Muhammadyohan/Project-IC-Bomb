@@ -2,10 +2,10 @@
 #include "readSwitch.h"
 #include "LEDdisp.h"
 
+//************************Global Variables***********************
 //Variables for stroring value from readSwitch()
 uint8_t checkSw;
 uint8_t swVal;
-
 //Variables for parameter of dispMode()
 uint8_t dispModeVal = 1;
 
@@ -15,12 +15,13 @@ void setup() {
   //set brightness of tm1637 led; 0-7
   tm.set(2);
 
-  //pin setup
+  //------------Pins setup------------------
+  //Switch's pins
   pinMode(SW1_PIN, INPUT);
   pinMode(SW2_PIN, INPUT);
   pinMode(SW3_PIN, INPUT);
   pinMode(RED, OUTPUT);
-  pinMOde(GREEN, OUTPUT);
+  pinMode(GREEN, OUTPUT);
   pinMode(BLUE, OUTPUT);
   
   Serial.begin(9600);
@@ -40,12 +41,13 @@ void loop() {
       dispModeVal += 1;
       if(dispModeVal > 3)
         dispModeVal = 1;
-      Serial.print("display mode = ");
-      Serial.println(dispModeVal);
+      // Serial.print("display mode = ");
+      // Serial.println(dispModeVal);
       tm.clearDisplay();  //clear tm1637's 7-segment led display before change to other display mode
       break;
 
     case 2:
+      
       break;
 
     case 3:
@@ -55,5 +57,5 @@ void loop() {
       break;
     }
   }
-  dispMode(dispModeVal);
+  DISP_MODE(dispModeVal);
 }

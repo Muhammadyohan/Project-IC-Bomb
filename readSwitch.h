@@ -4,8 +4,8 @@
 #define SW3_PIN 10
 
 //Variable for Read Switch Function
-unsigned long swCurrentTime = 0;
-unsigned long swPreviousTime = 0;
+// unsigned long swCurrentTime = 0;
+// unsigned long swPreviousTime = 0;
 uint8_t sw1;
 uint8_t sw2;
 uint8_t sw3;
@@ -39,7 +39,7 @@ uint8_t readSwitch()
         {
             do
             {
-                sw1 = digitalRead(SW1_PIN);
+                sw2 = digitalRead(SW2_PIN);
             } while (!sw2);
             delay(20);
             Serial.println("sw2 preesed");
@@ -49,7 +49,7 @@ uint8_t readSwitch()
         {
             do
             {
-                sw1 = digitalRead(SW1_PIN);
+                sw3 = digitalRead(SW3_PIN);
             } while (!sw3);
             delay(20);
             Serial.println("sw3 preesed");

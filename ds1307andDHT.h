@@ -1,11 +1,11 @@
-#include <TM1637.h>
 #include <Wire.h>
 #include <TimeLib.h>
 #include <DS1307RTC.h>
 #include<DHT.h>
+#include "tm1637.h"
 
 //define pin and type for dht11
-#define DHTPIN 6
+#define DHTPIN 7
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -20,17 +20,11 @@ unsigned long previousDispTime = 0;
 bool dispClkMode = true;
 bool dispTempMode = false;
 
-
-//set clk and dio pin for tm1637
-const int tm1637clk = 2;
-const int tm1637dio = 3;
-TM1637 tm(tm1637clk, tm1637dio);
-
 //for DS1307
 tmElements_t rtc;    
 
 //display mode check function
-void dispMode(uint8_t mode)
+void DISP_MODE(uint8_t mode)
 {
   //mode 1, 2, 3 display check
   switch(mode)
