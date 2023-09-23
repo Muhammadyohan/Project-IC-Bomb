@@ -1,14 +1,15 @@
-#define RED 7
-#define GREEN 6
-#define BLUE 5
+#define redPin 7
+#define greenPin 6
+#define bluePin 5
 #define delayTime 10
-#define SoundSensor A0
+#define analogMin 570 
+#define analogMax 574 
 
+int soundSensorPin = A0;
 int redValue;
 int greenValue;
 int blueValue;
-int SoundSensor = 0;
-int threshold = 1023;
+bool isMusicPlaying = false;
 
 void anyLED() {
     int i = 0;
@@ -21,8 +22,8 @@ void anyLED() {
         redValue = redValue - 1;
         greenValue = greenValue + 1;
 
-        analogWrite(RED, redValue);
-        analogWrite(GREEN, greenValue);
+        analogWrite(redPin, redValue);
+        analogWrite(greenPin, greenValue);
         delay(delayTime);
 
         i = i+1;
@@ -36,8 +37,8 @@ void anyLED() {
         greenValue = greenValue - 1;
         blueValue = blueValue + 1;
 
-        analogWrite(GREEN, greenValue);
-        analogWrite(BLUE, blueValue);
+        analogWrite(greenPin, greenValue);
+        analogWrite(bluePin, blueValue);
         delay(delayTime);
 
         i = i+1;
@@ -51,49 +52,31 @@ void anyLED() {
         blueValue = blueValue - 1;
         redValue = redValue + 1;
 
-        analogWrite(BLUE, blueValue);
-        analogWrite(RED, redValue);
+        analogWrite(bluePin, blueValue);
+        analogWrite(redPin, redValue);
         delay(delayTime);
 
         i = i+1;  
     } while (i<255);
 }
 
-void sinLED(){
-}
-
 void musicLED(){
-    sound = analogRead(SoundSensor);
-    if (sound < threshold){
-        i = random(0,3)
-        if(i = 0){
-            analogWrite(RED, 0)
-            analogWrite(GREEN, 255)
-            analogWrite(BLUE, 1)
-        }
+  int sensorValue = analogRead(soundSensorPin);
+  if (sensorValue >= analogMax || sensorValue <= analogMin) {
+    // ความสว่างของ LED ขึ้นอยู่กับค่า sensorValue
+    int brightness = map(sensorValue, analogMin, analogMax, 0, 255);
+    analogWrite(redPin, brightness);
+    analogWrite(greenPin, brightness);
+    analogWrite(bluePin, brightness);
+    isMusicPlaying = true;
 
-        if(i= 1){
-            analogWrite(RED,1)
-            analogWrite(GREEN, 0)
-            analogWrite(BLUE, 1)
-        }
-        if(i=2){
-            analogWrite(RED,0)
-            analogWrite(GREEN,1)
-            analogWrite(BLUE,0)
-        }
-        if(i=3){
-            analogWrite(RED,1)
-            analogWrite(GREEN,0)
-            analogWrite(BLUE,255)
-        }
-        else{
-            analogWrite(RED,255)
-            analogWrite(GREEN,255)
-            analogWrite(BLUE,255)
-        }
+  } else {
+    if (isMusicPlaying) {
+      // ปิด LED เมื่อเพลงหยุด
+      analogWrite(redPin, 0);
+      analogWrite(greenPin, 0);
+      analogWrite(bluePin, 0);
+      isMusicPlaying = false;
     }
+  }
 }
-
-
-

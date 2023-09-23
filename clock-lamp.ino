@@ -20,9 +20,10 @@ void setup() {
   pinMode(SW1_PIN, INPUT);
   pinMode(SW2_PIN, INPUT);
   pinMode(SW3_PIN, INPUT);
-  pinMode(RED, OUTPUT);
-  pinMode(GREEN, OUTPUT);
-  pinMode(BLUE, OUTPUT);
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  pinMode(soundSensorPin, INPUT);
   
   Serial.begin(9600);
 }
