@@ -7,7 +7,7 @@
 uint8_t checkSw;
 uint8_t swVal;
 //Variables for parameter of dispMode()
-uint8_t dispModeVal = 1;
+// uint8_t dispModeVal = 1;
 
 void setup() {
   //-------------begin tm1637--------------- 
@@ -29,7 +29,7 @@ void setup() {
 }
 
 void loop() {
-  checkSw = readSwitch();
+  checkSw = read_switch();
   if (checkSw != 0) //Switch preesed
   {
     swVal = checkSw;  //stored return value of readSwitch()
@@ -39,16 +39,15 @@ void loop() {
     //if switch 1 preesed
     //change display mode
     case 1:
-      dispModeVal += 1;
-      if(dispModeVal > 3)
-        dispModeVal = 1;
-      // Serial.print("display mode = ");
-      // Serial.println(dispModeVal);
-      tm.clearDisplay();  //clear tm1637's 7-segment led display before change to other display mode
+      // dispModeVal += 1;
+      // if(dispModeVal > 3)
+      //   dispModeVal = 1;
+      // // Serial.print("display mode = ");
+      // // Serial.println(dispModeVal);
+      // tm.clearDisplay();  //clear tm1637's 7-segment led display before change to other display mode
       break;
 
     case 2:
-      
       break;
 
     case 3:
@@ -58,5 +57,6 @@ void loop() {
       break;
     }
   }
-  DISP_MODE(dispModeVal);
+  // DISP_MODE(dispModeVal);
+  DISP_CLOCK_TEMP();
 }

@@ -24,26 +24,29 @@ bool dispTempMode = false;
 tmElements_t rtc;    
 
 //display mode check function
-void DISP_MODE(uint8_t mode)
-{
-  //mode 1, 2, 3 display check
-  switch(mode)
-  {
-    case 1:
-      DISP_CLOCK();
-      break;
-    case 2:
-      DISP_TEMP();
-      break;
-    case 3:
-      DISP_CLOCK_TEMP();
-      break;
-    default:
-      break;
-  }
-}
+//----------------------------**note** ---------------------------------
+//                   This function is old function.
+//
+// void DISP_MODE(uint8_t mode)
+// {
+//   //mode 1, 2, 3 display check
+//   switch(mode)
+//   {
+//     case 1:
+//       DISP_CLOCK();
+//       break;
+//     case 2:
+//       DISP_TEMP();
+//       break;
+//     case 3:
+//       DISP_CLOCK_TEMP();
+//       break;
+//     default:
+//       break;
+//   }
+// }
 
-//clock display function if display mode = 1
+//clock display function 
 void DISP_CLOCK()
 {
   //split tens and units of hour and minute
@@ -72,7 +75,7 @@ void DISP_CLOCK()
   }
 }
 
-//temperature display function if display mode = 2
+//temperature display function 
 void DISP_TEMP()
 {
   //read temperature from dht11
@@ -88,7 +91,7 @@ void DISP_TEMP()
   tm.display(2, 12);
 }
 
-//clock and temperature display function if display mode = 3
+//clock and temperature display function 
 //----------------------------**note** ---------------------------------
 //                    not sure if it work or not
 void DISP_CLOCK_TEMP()
