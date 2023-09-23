@@ -10,7 +10,7 @@
 #define MY_PCF8574_H_
 
 
-#include "aj-panyayot-twi.h"
+#include "twi.h"
 #define PCF8574_SLA_W	0x40
 #define PCF8574_SLA_R	0x41
 #define PCF8574A_SLA_W	0x70

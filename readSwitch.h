@@ -1,4 +1,4 @@
-#include "aj-panyayot-pcf8574.h"
+#include "pcf8574.h"
 //PIN of Switches
 #define SW1_PIN 8
 #define SW2_PIN 9
