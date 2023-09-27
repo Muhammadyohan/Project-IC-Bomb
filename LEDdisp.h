@@ -1,14 +1,17 @@
 #define redPin 7
 #define greenPin 6
 #define bluePin 5
-#define delayTime 10
-#define analogMin 570 
-#define analogMax 574 
+#define analogMin 575
+#define analogMax 581
+
 
 int soundSensorPin = A0;
 int redValue;
 int greenValue;
 int blueValue;
+int brightness = 0; 
+int fadeBright = 10; //ความเร็วของแสง
+unsigned long previousTime = 0;
 bool isMusicPlaying = false;
 
 void anyLED() {
@@ -60,23 +63,43 @@ void anyLED() {
     } while (i<255);
 }
 
-void musicLED(){
+void musicLED() {
   int sensorValue = analogRead(soundSensorPin);
-  if (sensorValue >= analogMax || sensorValue <= analogMin) {
+  Serial.println(sensorValue);
+  if (sensorValue >= analogMax || sensorValue < analogMin) {
     // ความสว่างของ LED ขึ้นอยู่กับค่า sensorValue
-    int brightness = map(sensorValue, analogMin, analogMax, 0, 255);
-    analogWrite(redPin, brightness);
-    analogWrite(greenPin, brightness);
-    analogWrite(bluePin, brightness);
+    brightness = map(sensorValue, analogMin, analogMax, 0, 255);
     isMusicPlaying = true;
-
   } else {
     if (isMusicPlaying) {
-      // ปิด LED เมื่อเพลงหยุด
       analogWrite(redPin, 0);
       analogWrite(greenPin, 0);
       analogWrite(bluePin, 0);
       isMusicPlaying = false;
     }
   }
+  
+  if (isMusicPlaying) {
+
+    /*unsigned long currentTime = millis();
+    if(currentTime - previousTime >= 200)
+    {
+      previousTime = currentTime;*/
+    
+      analogWrite(redPin, redValue);
+      analogWrite(greenPin, greenValue);
+      analogWrite(bluePin, blueValue);
+      
+      brightness = brightness + fadeBright;
+  
+      if (brightness <= 0 || brightness >= 255) {
+        fadeBright = ~fadeBright;
+      }
+      
+      // Apply brightness to RGB values
+      redValue = 255 - brightness;
+      greenValue = brightness;
+      blueValue = abs(128 - brightness);
+    }
+  //}
 }
