@@ -1,17 +1,18 @@
-#define redPin 7
-#define greenPin 6
-#define bluePin 5
-#define analogMin 575
-#define analogMax 581
+#define bluePin 7
+#define redPin 6
+#define greenPin 5
+#define analogMin 600
+#define analogMax 609
+#define NUM_COLORS 52
 
-
-int soundSensorPin = A0;
 int redValue;
 int greenValue;
 int blueValue;
+int soundSensorPin = A0;
 int brightness = 0; 
-int fadeBright = 10; //ความเร็วของแสง
-unsigned long previousTime = 0;
+int colorIndex = 0;
+int fadeBright = 10; // ความเร็วของแสง
+int colors[NUM_COLORS][3];
 bool isMusicPlaying = false;
 
 void anyLED() {
@@ -69,6 +70,13 @@ void musicLED() {
   if (sensorValue >= analogMax || sensorValue < analogMin) {
     // ความสว่างของ LED ขึ้นอยู่กับค่า sensorValue
     brightness = map(sensorValue, analogMin, analogMax, 0, 255);
+    
+    for (int i = 0; i < NUM_COLORS; i++) {
+    colors[i][0] = map(i, 0, NUM_COLORS - 1, 255, 0); // สีแดง
+    colors[i][1] = map(i, 0, NUM_COLORS - 1, 0, 255); // สีเขียว
+    colors[i][2] = 128; // สีฟ้า
+    }
+    
     isMusicPlaying = true;
   } else {
     if (isMusicPlaying) {
@@ -81,25 +89,19 @@ void musicLED() {
   
   if (isMusicPlaying) {
 
-    /*unsigned long currentTime = millis();
-    if(currentTime - previousTime >= 200)
-    {
-      previousTime = currentTime;*/
-    
+      int redValue = colors[colorIndex][0];
+      int greenValue = colors[colorIndex][1];
+      int blueValue = colors[colorIndex][2];
+
       analogWrite(redPin, redValue);
       analogWrite(greenPin, greenValue);
       analogWrite(bluePin, blueValue);
-      
-      brightness = brightness + fadeBright;
-  
+
+      colorIndex = (colorIndex + 1) % NUM_COLORS; // เปลี่ยนค่าสีไปสีถัดไป
+    
+      brightness = brightness - fadeBright;
       if (brightness <= 0 || brightness >= 255) {
-        fadeBright = ~fadeBright;
+        fadeBright = -fadeBright; // เปลี่ยนทิศทางการเพิ่มหรือลดความสว่าง
       }
-      
-      // Apply brightness to RGB values
-      redValue = 255 - brightness;
-      greenValue = brightness;
-      blueValue = abs(128 - brightness);
-    }
-  //}
+  }
 }
