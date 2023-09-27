@@ -1,4 +1,4 @@
-#define buzzPin 2
+#define buzzPin 8
 
 void setup(){
   pinMode(buzzPin, OUTPUT);
