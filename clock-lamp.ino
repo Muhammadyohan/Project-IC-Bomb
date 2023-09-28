@@ -61,7 +61,7 @@ void loop() {
       // tm.clearDisplay();  //clear tm1637's 7-segment led display before change to other display mode
       break;
 
-    //Clock Modify Button
+    //Clock Modify Select Button
     case 2:
       isModClkMode = true;
       mUnit = rtc.Minute % 10;
@@ -95,11 +95,13 @@ void loop() {
       }
       break;
     
+    //Increase Number Button
     case 4:
       if(isModClkMode)
         MOD_CLOCK(modModeSel, INCREASE_MODE);
       break;
 
+    //Decrease Number Button
     case 5:
       if(isModClkMode)
         MOD_CLOCK(modModeSel, DECREASE_MODE);

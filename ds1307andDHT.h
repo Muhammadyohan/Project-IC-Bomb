@@ -213,6 +213,7 @@ void MOD_HOUR(uint8_t mode)
     rtc.Hour += 1;
     if(rtc.Hour > 23)
       rtc.Hour = 0;
+    blink_clock = false;
     tm.display(0, hTen);
     tm.display(1, hUnit);
     break;
@@ -221,6 +222,7 @@ void MOD_HOUR(uint8_t mode)
     rtc.Hour -= 1;
     if(rtc.Hour == 255)
       rtc.Hour = 23;
+    blink_clock = false;
     tm.display(0, hTen);
     tm.display(1, hUnit);
     break;
