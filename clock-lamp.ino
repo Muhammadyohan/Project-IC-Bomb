@@ -1,6 +1,6 @@
-#include "ds1307andDHT.h"
-#include "readSwitch.h"
-#include "LEDdisp.h"
+#include "clock_modifying.h"
+#include "read_switch.h"
+#include "led_disp.h"
 #include "buzzer.h"
 
 //************************Global Variables***********************
@@ -69,7 +69,7 @@ void loop() {
       if(modModeSel > 1)
         modModeSel = 0;
       
-      //Make Number of Hour or Minute Display When Switching Modify
+      //Make Number of Hour or Minute Display When Switc to Modify Hour or Minute
       blink_clock = true;
       mUnit = rtc.Minute % 10;
       mTen = rtc.Minute / 10;
