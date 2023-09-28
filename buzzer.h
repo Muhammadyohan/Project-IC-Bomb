@@ -1,13 +1,4 @@
 #define buzzPin 8
-void buzzMelody();
-
-void setup_for_test(){
-  pinMode(buzzPin, OUTPUT);
-}
-
-void loop_for_test(){
-  buzzMelody();
-}
 
 int melody[] = {
   659, 125, 659, 125, 659, 125, 523, 125, 659, 125, 784, 125, 392, 125, 523, 125,
