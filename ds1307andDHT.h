@@ -264,6 +264,7 @@ void MOD_MINUTE(uint8_t mode)
     rtc.Minute += 1;
     if(rtc.Minute > 59)
       rtc.Minute = 0;
+    blink_clock = false;
     tm.display(2, mTen);
     tm.display(3, mUnit);
     break;
@@ -272,6 +273,7 @@ void MOD_MINUTE(uint8_t mode)
     rtc.Minute -= 1;
     if(rtc.Minute == 255)
       rtc.Minute = 59;
+    blink_clock = false;
     tm.display(2, mTen);
     tm.display(3, mUnit);
     break;
