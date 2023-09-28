@@ -7,8 +7,6 @@
 //Variables for stroring value from readSwitch()
 uint8_t checkSw;
 uint8_t swVal;
-//Variables for parameter of dispMode()
-// uint8_t dispModeVal = 1;
 //---------------------------------------------------------------
 
 //Variables for Clock Modify Mode
@@ -24,11 +22,6 @@ void setup() {
   init_twi_module();
 
   //------------Pins setup------------------
-  //Switch's pins
-  pinMode(SW1_PIN, INPUT);
-  pinMode(SW2_PIN, INPUT);
-  pinMode(SW3_PIN, INPUT);
-
   pinMode(soundSensorPin, INPUT);
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
@@ -45,20 +38,10 @@ void loop() {
   if (checkSw != 0) 
   {
     swVal = checkSw;  //stored return value of readSwitch()
-    Serial.print("swVaL = ");
-    Serial.println(swVal);
     
     switch (swVal)  //check if which switch is preesed
     {
-    //if switch 1 preesed
-    //change display mode
     case 1:
-      // dispModeVal += 1;
-      // if(dispModeVal > 3)
-      //   dispModeVal = 1;
-      // Serial.print("display mode = ");
-      // Serial.println(dispModeVal);
-      // tm.clearDisplay();  //clear tm1637's 7-segment led display before change to other display mode
       break;
 
     //Clock Modify Select Button

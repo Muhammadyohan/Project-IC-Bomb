@@ -11,7 +11,7 @@ void MOD_HOUR(uint8_t mode);
 void MOD_MINUTE(uint8_t mode);
 
 //*************************Modify Clock Function*************************
-//Vairables for Clock Modify
+//Vairables for Clock Modifying
 bool blink_clock = false;
 unsigned long modClkPreviousTime = 0;
 //Switching Modify mode of clock function
@@ -93,7 +93,7 @@ void MOD_MINUTE(uint8_t mode)
   switch (mode)
   {
   case IDLE_MODE:
-    //Blinking hour of clock
+    //Blinking minute of clock
     if(millis() - modClkPreviousTime > 500)
     {
       modClkPreviousTime = millis();
