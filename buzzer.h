@@ -1,10 +1,11 @@
 #define buzzPin 8
+void buzzMelody();
 
-void setup(){
+void setup_for_test(){
   pinMode(buzzPin, OUTPUT);
 }
 
-void loop(){
+void loop_for_test(){
   buzzMelody();
 }
 

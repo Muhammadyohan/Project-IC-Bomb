@@ -4,6 +4,7 @@
 #define analogMin 600
 #define analogMax 609
 #define NUM_COLORS 52
+#define delayTime 10
 
 int redValue;
 int greenValue;

@@ -1,6 +1,7 @@
 #include "ds1307andDHT.h"
 #include "readSwitch.h"
 #include "LEDdisp.h"
+#include "buzzer.h"
 
 //************************Global Variables***********************
 //Variables for stroring value from readSwitch()
