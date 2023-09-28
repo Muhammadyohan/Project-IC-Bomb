@@ -64,6 +64,13 @@ void loop() {
     //Clock Modify Select Button
     case 2:
       isModClkMode = true;
+      //Switching Modify Mode between Modify Hour or Modify Minute
+      modModeSel += 1;
+      if(modModeSel > 1)
+        modModeSel = 0;
+      
+      //Make Number of Hour or Minute Display When Switching Modify
+      blink_clock = true;
       mUnit = rtc.Minute % 10;
       mTen = rtc.Minute / 10;
       hUnit = rtc.Hour % 10;
@@ -73,9 +80,6 @@ void loop() {
       tm.display(1, hUnit);
       tm.display(2, mTen);
       tm.display(3, mUnit);
-      modModeSel += 1;
-      if(modModeSel > 1)
-        modModeSel = 0;
       break;
 
     //Save Button
@@ -87,7 +91,7 @@ void loop() {
           isModClkMode = false;
           modModeSel = 1;
         }
-        if (isModClkMode)
+        if (isModClkMode) //Write error
         {
           Serial.println("DS1307 Communication Error :-{");
           Serial.println("Please check your circuitry");
@@ -95,23 +99,26 @@ void loop() {
       }
       break;
     
-    //Increase Number Button
+    //Increase Number Button when on Clock Modifying 
     case 4:
       if(isModClkMode)
         MOD_CLOCK(modModeSel, INCREASE_MODE);
       break;
 
-    //Decrease Number Button
+    //Decrease Number Button when on Clock Modifying 
     case 5:
       if(isModClkMode)
         MOD_CLOCK(modModeSel, DECREASE_MODE);
+      break;
+
+    default:
       break;
     }
   }
 
   //************************Clock Display************************
-  if(isModClkMode)
+  if(isModClkMode)  //Clock Modifying Display
     MOD_CLOCK(modModeSel, IDLE_MODE);
-  else
+  else              //Clock and Temperatur Display
     DISP_CLOCK_TEMP();
 }
