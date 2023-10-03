@@ -3,7 +3,12 @@
 #include <DS1307RTC.h>
 #include <DHT.h>
 #include "tm1637.h"
+#include "global_variables.h"
 
+//define for modify mode of clock and clock alarm
+#define IDLE_MODE 0
+#define INCREASE_MODE 1
+#define DECREASE_MODE 2
 //define pin and type for dht11
 #define DHTPIN 7
 #define DHTTYPE DHT11
@@ -23,40 +28,30 @@ unsigned long currentDispTime = 0;
 unsigned long previousDispTime = 0;
 bool dispClkMode = true;
 bool dispTempMode = false;
-int mUnit;
-int mTen;
-int hUnit;
-int hTen;
-int tUnit;
-int tTen;
+int mUnit, mTen, hUnit, hTen, tUnit, tTen;
 
 //clock and temperature display function 
-void DISP_CLOCK_TEMP()
-{
+void DISP_CLOCK_TEMP() {
   //Clock Display
-  if(dispClkMode)
-  {
+  if(dispClkMode) {
     DISP_CLOCK();
     currentDispTime = millis();
-
     //After 5 seconds Clock Display. Display Mode will change to Temperature Display Mode
-    if(currentDispTime - previousDispTime > 5000)
-    {
+    if(currentDispTime - previousDispTime > 5000) {
       previousDispTime = millis();
       dispClkMode = false;
       dispTempMode = true;
       tm.clearDisplay();  //Clear tm1637's 7-segment led display
     }
   }
+
   //Temperature Display
   if(dispTempMode)
   {
     DISP_TEMP();
     currentDispTime = millis();
-
-    //After 3 seconds Temperature Display. Display Mode will change to Clock Display Mode
-    if(currentDispTime - previousDispTime > 3000)
-    {
+    //After 2 seconds Temperature Display. Display Mode will change to Clock Display Mode
+    if(currentDispTime - previousDispTime > 2000) {
       previousDispTime = millis();
       dispClkMode = true;
       dispTempMode = false;
@@ -69,35 +64,25 @@ void DISP_CLOCK_TEMP()
 //Variables for Blinking Point
 bool blink_point = false;
 unsigned long blinkPointPreviousTime = 0;
-void DISP_CLOCK()
-{
-  //split tens and units of hour and minute
-  mUnit = rtc.Minute % 10;
-  mTen = rtc.Minute / 10;
-  hUnit = rtc.Hour % 10;
-  hTen = rtc.Hour / 10;
-
+void DISP_CLOCK() {
   //read RTC
   if (RTC.read(rtc)) {
+    //split tens and units of hour and minute
+    mUnit = rtc.Minute % 10;
+    mTen = rtc.Minute / 10;
+    hUnit = rtc.Hour % 10;
+    hTen = rtc.Hour / 10;
     //clock display use tm.display(position, character) of tm1637
     tm.display(0, hTen);
     tm.display(1, hUnit);
     tm.display(2, mTen);
     tm.display(3, mUnit);
+
     //blinking : of clock
-    if(millis() - blinkPointPreviousTime > 500)
-    {
+    if(millis() - blinkPointPreviousTime > 500) {
       blinkPointPreviousTime = millis();
-      if(blink_point)
-      {
-        blink_point = false;
-        tm.point(0);
-      }
-      else
-      {
-        blink_point = true;
-        tm.point(1);
-      }
+      blink_point = !blink_point;
+      tm.point(blink_point ? 1 : 0);
     }
   } else {
     //if RTC read error
@@ -112,8 +97,7 @@ void DISP_CLOCK()
 }
 
 //Temperature display function 
-void DISP_TEMP()
-{
+void DISP_TEMP() {
   //read temperature from dht11
   int temp = dht.readTemperature();
   //split tens and units of temp

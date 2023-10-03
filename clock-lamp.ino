@@ -1,17 +1,6 @@
-#include "clock_modifying.h"
-#include "read_switch.h"
+#include "clock_alarm_modifying.h"
 #include "led_disp.h"
 #include "buzzer.h"
-
-//************************Global Variables***********************
-//Variables for stroring value from readSwitch()
-uint8_t checkSw;
-uint8_t swVal;
-//---------------------------------------------------------------
-
-//Variables for Clock Modify Mode
-bool isModClkMode = false;
-uint8_t modModeSel = 1;
 
 void setup() {
   //-------------begin tm1637--------------- 
@@ -35,73 +24,72 @@ void setup() {
 void loop() {
   //************************Switch preesed***********************
   checkSw = read_switch();
-  if (checkSw != 0) 
-  {
+  if (checkSw != 0) {
     swVal = checkSw;  //stored return value of readSwitch()
     
-    switch (swVal)  //check if which switch is preesed
-    {
-    case 1:
-      break;
+    switch (swVal) {  //check if which switch is preesed
+      case 1: //Clock Alarm Modify Select Button
+        if (config_allow && !isModClkAlarmMode) 
+          setupModClockAlarmDisplay();
+        if (config_allow || isModClkAlarmMode) 
+          handleClockAlarmModify();
+        break;
 
-    //Clock Modify Select Button
-    case 2:
-      isModClkMode = true;
-      //Switching Modify Mode between Modify Hour or Modify Minute
-      modModeSel += 1;
-      if(modModeSel > 1)
-        modModeSel = 0;
-      
-      //Make Number of Hour or Minute Display When Switc to Modify Hour or Minute
-      blink_clock = true;
-      mUnit = rtc.Minute % 10;
-      mTen = rtc.Minute / 10;
-      hUnit = rtc.Hour % 10;
-      hTen = rtc.Hour / 10;
-      tm.point(1);
-      tm.display(0, hTen);
-      tm.display(1, hUnit);
-      tm.display(2, mTen);
-      tm.display(3, mUnit);
-      break;
+      case 2: //Clock Modify Select Button
+        if (config_allow && !isModClkMode) 
+          setupModClockDisplay();
+        if (config_allow || isModClkMode) 
+          handleClockModify(); 
+        break;
 
-    //Save Button
-    case 3:
-      if(isModClkMode)
-      {
-        if (RTC.write(rtc))
-        {
+      case 3: //Save Button
+        if (isModClkMode && RTC.write(rtc)) {
+          config_allow = true;
           isModClkMode = false;
           modModeSel = 1;
         }
-        if (isModClkMode) //Write error
-        {
+        if (isModClkMode) { //Write error
           Serial.println("DS1307 Communication Error :-{");
           Serial.println("Please check your circuitry");
         }
-      }
-      break;
-    
-    //Increase Number Button when on Clock Modifying 
-    case 4:
-      if(isModClkMode)
-        MOD_CLOCK(modModeSel, INCREASE_MODE);
-      break;
+        if (isModClkAlarmMode) {
+          CLOCK_ALARM_WRITE(HOUR, temp_hour_clk_alarm);
+          CLOCK_ALARM_WRITE(MINUTE, temp_minute_clk_alarm);
+          config_allow = true;
+          isModClkAlarmMode = false;
+        }
+        break;
 
-    //Decrease Number Button when on Clock Modifying 
-    case 5:
-      if(isModClkMode)
-        MOD_CLOCK(modModeSel, DECREASE_MODE);
-      break;
+      case 4: //Cancel Button
+        modModeSel = 1;
+        config_allow = true;
+        isModClkMode = false; 
+        isModClkAlarmMode = false;
+        break; 
 
-    default:
-      break;
+      case 5: //Increase Number Button when on Clock Modifying 
+        if (isModClkMode) MOD_CLOCK(modModeSel, INCREASE_MODE);
+        if (isModClkAlarmMode) MOD_CLOCK_ALARM(modModeSel, INCREASE_MODE);
+        break;
+
+      case 6: //Decrease Number Button when on Clock Modifying 
+        if (isModClkMode) MOD_CLOCK(modModeSel, DECREASE_MODE);
+        if (isModClkAlarmMode) MOD_CLOCK_ALARM(modModeSel, DECREASE_MODE);
+        break;
+
+      default: break;
     }
   }
 
   //************************Clock Display************************
-  if(isModClkMode)  //Clock Modifying Display
-    MOD_CLOCK(modModeSel, IDLE_MODE);
-  else              //Clock and Temperatur Display
-    DISP_CLOCK_TEMP();
+  //Clock Modifying and Clock Alarm Modifying Display
+  if (!config_allow) {
+    if (isModClkMode) 
+      MOD_CLOCK(modModeSel, IDLE_MODE);
+    if (isModClkAlarmMode) 
+      MOD_CLOCK_ALARM(modModeSel, IDLE_MODE);
+  } else {
+    DISP_CLOCK_TEMP(); //Clock and Temperatur Display
+    CLOCK_ALARM_CHECK_AND_HANDLE(); //Check clock alarm and handle
+  }
 }
