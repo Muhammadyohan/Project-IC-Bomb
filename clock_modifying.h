@@ -126,7 +126,7 @@ void setupModClockDisplay() {
 }
 
 void handleClockModify() {
-  config_allow = false;
+  edit_allow = false;
   isModClkMode = true;
   //Switching Modify Mode between Modify Hour or Modify Minute
   modModeSel = (modModeSel + 1) % 2;

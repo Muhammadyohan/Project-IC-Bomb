@@ -131,7 +131,7 @@ void setupModClockAlarmDisplay() {
 }
 
 void handleClockAlarmModify() {
-  config_allow = false;
+  edit_allow = false;
   isModClkAlarmMode = true;
   //Switching Modify Mode between Modify Hour or Modify Minute
   modModeSel = (modModeSel + 1) % 2;

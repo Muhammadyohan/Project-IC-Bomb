@@ -25,26 +25,26 @@ void loop() {
   //************************Switch preesed***********************
   checkSw = read_switch();
   if (checkSw != 0) {
-    swVal = checkSw;  //stored return value of readSwitch()
+    swVal = checkSw;  //stored return value of read_switch()
     
     switch (swVal) {  //check if which switch is preesed
       case 1: //Clock Alarm Modify Select Button
-        if (config_allow && !isModClkAlarmMode) 
+        if (edit_allow && !isModClkAlarmMode) 
           setupModClockAlarmDisplay();
-        if (config_allow || isModClkAlarmMode) 
+        if (edit_allow || isModClkAlarmMode) 
           handleClockAlarmModify();
         break;
 
       case 2: //Clock Modify Select Button
-        if (config_allow && !isModClkMode) 
+        if (edit_allow && !isModClkMode) 
           setupModClockDisplay();
-        if (config_allow || isModClkMode) 
+        if (edit_allow || isModClkMode) 
           handleClockModify(); 
         break;
 
       case 3: //Save Button
         if (isModClkMode && RTC.write(rtc)) {
-          config_allow = true;
+          edit_allow = true;
           isModClkMode = false;
           modModeSel = 1;
         }
@@ -55,14 +55,14 @@ void loop() {
         if (isModClkAlarmMode) {
           CLOCK_ALARM_WRITE(HOUR, temp_hour_clk_alarm);
           CLOCK_ALARM_WRITE(MINUTE, temp_minute_clk_alarm);
-          config_allow = true;
+          edit_allow = true;
           isModClkAlarmMode = false;
         }
         break;
 
       case 4: //Cancel Button
         modModeSel = 1;
-        config_allow = true;
+        edit_allow = true;
         isModClkMode = false; 
         isModClkAlarmMode = false;
         break; 
@@ -83,7 +83,7 @@ void loop() {
 
   //************************Clock Display************************
   //Clock Modifying and Clock Alarm Modifying Display
-  if (!config_allow) {
+  if (!edit_allow) {
     if (isModClkMode) 
       MOD_CLOCK(modModeSel, IDLE_MODE);
     if (isModClkAlarmMode) 
