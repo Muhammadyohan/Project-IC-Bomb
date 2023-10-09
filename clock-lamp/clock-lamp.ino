@@ -79,14 +79,14 @@ void loop() {
       case 5: //Increase Number Button when on Clock Modifying 
         if (isModClkMode) MOD_CLOCK(modModeSel, INCREASE_MODE);
         else if (isModClkAlarmMode) MOD_CLOCK_ALARM(modModeSel, INCREASE_MODE);
-        else {}
-        break;
+        else {defaultLED();
+        }break;
 
       case 6: //Decrease Number Button when on Clock Modifying 
         if (isModClkMode) MOD_CLOCK(modModeSel, DECREASE_MODE);
         else if (isModClkAlarmMode) MOD_CLOCK_ALARM(modModeSel, DECREASE_MODE);
-        else {}
-        break;
+        else { musicLED();
+        }break;
 
       default: break;
     }
