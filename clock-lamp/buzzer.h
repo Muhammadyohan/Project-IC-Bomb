@@ -90,9 +90,9 @@
 #define NOTE_DS8 4978
 #define REST      0
 
-
 int buzzPin = 8; //Pin Buzzer
-//Calculate Note and Keep length Note
+
+bool buttonPress = false;
 int tempo = 150; //Faster music
 
 //Calculate length Note in ms
@@ -104,7 +104,6 @@ int wholenote = (60000 * 4) / tempo;
 int divider = 0;
 int noteDuration = 0;
 bool isPlaying = true;
-bool buttonPress = false;
 unsigned long PreviousTime = 0;
 
 
@@ -131,6 +130,8 @@ int melody[] = {
   NOTE_FS4,8, NOTE_G4,8, NOTE_A4,2,   
 };
 
+
+//Calculate Note and Keep length Note
 int notes = sizeof(melody) / sizeof(melody[0]) / 2;
 
 void buzzMelody() {
