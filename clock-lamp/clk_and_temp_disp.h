@@ -10,7 +10,7 @@
 #define INCREASE_MODE 1
 #define DECREASE_MODE 2
 //define pin and type for dht11
-#define DHTPIN 7
+#define DHTPIN 4
 DHT11 dht11(DHTPIN);
 
 //declare functions
@@ -40,6 +40,7 @@ void DISP_CLOCK_TEMP() {
       previousDispTime = millis();
       dispClkMode = false;
       dispTempMode = true;
+      tm.point(0);
       tm.clearDisplay();  //Clear tm1637's 7-segment led display
     }
   }
@@ -54,6 +55,7 @@ void DISP_CLOCK_TEMP() {
       previousDispTime = millis();
       dispClkMode = true;
       dispTempMode = false;
+      tm.point(0);
       tm.clearDisplay();  //Clear tm1637's 7-segment led display
     }
   }
@@ -107,7 +109,6 @@ void DISP_TEMP() {
     //temperature display use tm.display(position, character) of tm1637
     tm.display(0, tTen);
     tm.display(1, tUnit);
-    tm.point(0);
     tm.display(2, 12);
-  } else {Serial.println(DHT11::getErrorString(temp));}
+  } else DISP_TEMP();
 }
