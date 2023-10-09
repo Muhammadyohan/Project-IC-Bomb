@@ -113,15 +113,11 @@ void MOD_MINUTE(uint8_t mode) {
 
 //*************************Setup and Handle Clock Alarm*************************
 void setupModClockDisplay() {
-  //split tens and units of hour
+  //split tens and units of hour and minute
   mUnit = rtc.Minute % 10;
   mTen = rtc.Minute / 10;
   hUnit = rtc.Hour % 10;
   hTen = rtc.Hour / 10;
-  tm.display(0, hTen);
-  tm.display(1, hUnit);
-  tm.display(2, mTen);
-  tm.display(3, mUnit);
   tm.point(1);
 }
 

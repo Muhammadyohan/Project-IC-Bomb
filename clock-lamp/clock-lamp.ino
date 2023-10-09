@@ -1,5 +1,6 @@
 #include "clock_alarm_modifying.h"
 #include "led_disp.h"
+#include "EEPROM.h"
 
 void setup() {
   //-------------begin tm1637--------------- 
@@ -9,13 +10,22 @@ void setup() {
 
   init_twi_module();
 
-  //------------Pins setup------------------
+  //------------------Pins setup------------------
   pinMode(soundSensorPin, INPUT);
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
 
   pinMode(buzzPin, OUTPUT);
+
+  //-----------------------------EEPROM-----------------------------
+  // EEPROM_clear_all_data();
+  // EEPROM_first_write_alarm_time(0x00, 0x00);
+  // tmp_hour_clk_alarm = read_hour_alarm_time_in_EEPROM();
+  // tmp_minute_clk_alarm = read_minute_alarm_time_in_EEPROM();
+  // CLOCK_ALARM_WRITE(HOUR, tmp_hour_clk_alarm);
+  // CLOCK_ALARM_WRITE(MINUTE, tmp_minute_clk_alarm);
+
 
   Serial.begin(9600);
 }
@@ -52,8 +62,8 @@ void loop() {
           Serial.println("Please check your circuitry");
         }
         if (isModClkAlarmMode) {
-          CLOCK_ALARM_WRITE(HOUR, temp_hour_clk_alarm);
-          CLOCK_ALARM_WRITE(MINUTE, temp_minute_clk_alarm);
+          CLOCK_ALARM_WRITE(HOUR, tmp_hour_clk_alarm);
+          CLOCK_ALARM_WRITE(MINUTE, tmp_minute_clk_alarm);
           edit_allow = true;
           isModClkAlarmMode = false;
         }
@@ -90,7 +100,7 @@ void loop() {
     if (isModClkAlarmMode) 
       MOD_CLOCK_ALARM(modModeSel, IDLE_MODE);
   } else {
-    DISP_CLOCK_TEMP(); //Clock and Temperatur Display
+    DISP_CLOCK_TEMP(); //Clock and Temperater Display
     CLOCK_ALARM_CHECK_AND_HANDLE(); //Check clock alarm and handle
   }
 }

@@ -12,7 +12,7 @@ void handleClockAlarmModify();
 //Variables for Clock Modifying
 bool blink_clock_alarm = false;
 unsigned long modClkAlarmPreviousTime = 0;
-uint8_t temp_hour_clk_alarm, temp_minute_clk_alarm;
+uint8_t tmp_hour_clk_alarm, tmp_minute_clk_alarm;
 
 //Switching Modify mode of clock alarm function
 void MOD_CLOCK_ALARM(uint8_t modeSel, uint8_t modMode) {
@@ -26,8 +26,8 @@ void MOD_CLOCK_ALARM(uint8_t modeSel, uint8_t modMode) {
 //Modify hour of clock alarm function
 void MOD_HOUR_ALARM(uint8_t mode) {
   //split tens and units of hour
-  hUnit = temp_hour_clk_alarm % 10;
-  hTen = temp_hour_clk_alarm / 10;
+  hUnit = tmp_hour_clk_alarm % 10;
+  hTen = tmp_hour_clk_alarm / 10;
   
   switch (mode) {
     case IDLE_MODE:
@@ -39,8 +39,8 @@ void MOD_HOUR_ALARM(uint8_t mode) {
           tm.display(1, CLEAR_DISPLAY);
           blink_clock_alarm = false;
         } else {
-          hUnit = temp_hour_clk_alarm % 10;
-          hTen = temp_hour_clk_alarm / 10;
+          hUnit = tmp_hour_clk_alarm % 10;
+          hTen = tmp_hour_clk_alarm / 10;
           tm.display(0, hTen);
           tm.display(1, hUnit);
           blink_clock_alarm = true;
@@ -49,18 +49,18 @@ void MOD_HOUR_ALARM(uint8_t mode) {
       break;
     
     case INCREASE_MODE:
-      temp_hour_clk_alarm = (temp_hour_clk_alarm + 1) % 24;
-      hUnit = temp_hour_clk_alarm % 10;
-      hTen = temp_hour_clk_alarm / 10;
+      tmp_hour_clk_alarm = (tmp_hour_clk_alarm + 1) % 24;
+      hUnit = tmp_hour_clk_alarm % 10;
+      hTen = tmp_hour_clk_alarm / 10;
       tm.display(0, hTen);
       tm.display(1, hUnit);
       blink_clock_alarm = false;
       break;
 
     case DECREASE_MODE:
-      temp_hour_clk_alarm = (temp_hour_clk_alarm + 23) % 24;
-      hUnit = temp_hour_clk_alarm % 10;
-      hTen = temp_hour_clk_alarm / 10;
+      tmp_hour_clk_alarm = (tmp_hour_clk_alarm + 23) % 24;
+      hUnit = tmp_hour_clk_alarm % 10;
+      hTen = tmp_hour_clk_alarm / 10;
       tm.display(0, hTen);
       tm.display(1, hUnit);
       blink_clock_alarm = false;
@@ -72,8 +72,8 @@ void MOD_HOUR_ALARM(uint8_t mode) {
 
 void MOD_MINUTE_ALARM(uint8_t mode) {
   //split tens and units of minute
-  mUnit = temp_minute_clk_alarm % 10;
-  mTen = temp_minute_clk_alarm / 10;
+  mUnit = tmp_minute_clk_alarm % 10;
+  mTen = tmp_minute_clk_alarm / 10;
 
   switch (mode) {
     case IDLE_MODE:
@@ -85,8 +85,8 @@ void MOD_MINUTE_ALARM(uint8_t mode) {
           tm.display(3, CLEAR_DISPLAY);
           blink_clock_alarm = false;
         } else {
-          mUnit = temp_minute_clk_alarm % 10;
-          mTen = temp_minute_clk_alarm / 10;
+          mUnit = tmp_minute_clk_alarm % 10;
+          mTen = tmp_minute_clk_alarm / 10;
           tm.display(2, mTen);
           tm.display(3, mUnit);
           blink_clock_alarm = true;
@@ -95,16 +95,16 @@ void MOD_MINUTE_ALARM(uint8_t mode) {
       break;
     
     case INCREASE_MODE:
-      temp_minute_clk_alarm = (temp_minute_clk_alarm + 1) % 60;
-      mUnit = temp_minute_clk_alarm % 10;
-      mTen = temp_minute_clk_alarm / 10;
+      tmp_minute_clk_alarm = (tmp_minute_clk_alarm + 1) % 60;
+      mUnit = tmp_minute_clk_alarm % 10;
+      mTen = tmp_minute_clk_alarm / 10;
       tm.display(2, mTen);
       tm.display(3, mUnit);
       blink_clock_alarm = false;
       break;
 
     case DECREASE_MODE:
-      temp_minute_clk_alarm = (temp_minute_clk_alarm + 59) % 60;
+      tmp_minute_clk_alarm = (tmp_minute_clk_alarm + 59) % 60;
       tm.display(2, mTen);
       tm.display(3, mUnit);
       blink_clock_alarm = false;
@@ -116,17 +116,13 @@ void MOD_MINUTE_ALARM(uint8_t mode) {
 
 //*************************Setup and Handle Clock Alarm*************************
 void setupModClockAlarmDisplay() {
-  temp_hour_clk_alarm = CLOCK_ALARM_READ(HOUR);
-  temp_minute_clk_alarm = CLOCK_ALARM_READ(MINUTE);
-  //split tens and units of hour
-  mUnit = temp_minute_clk_alarm % 10;
-  mTen = temp_minute_clk_alarm / 10;
-  hUnit = temp_hour_clk_alarm % 10;
-  hTen = temp_hour_clk_alarm / 10;
-  tm.display(0, hTen);
-  tm.display(1, hUnit);
-  tm.display(2, mTen);
-  tm.display(3, mUnit);
+  tmp_hour_clk_alarm = CLOCK_ALARM_READ(HOUR);
+  tmp_minute_clk_alarm = CLOCK_ALARM_READ(MINUTE);
+  //split tens and units of hour and minute
+  mUnit = tmp_minute_clk_alarm % 10;
+  mTen = tmp_minute_clk_alarm / 10;
+  hUnit = tmp_hour_clk_alarm % 10;
+  hTen = tmp_hour_clk_alarm / 10;
   tm.point(1);
 }
 
