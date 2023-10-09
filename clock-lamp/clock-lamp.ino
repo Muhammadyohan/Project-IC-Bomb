@@ -17,7 +17,7 @@ void setup() {
   pinMode(bluePin, OUTPUT);
 
   pinMode(buzzPin, OUTPUT);
-  
+
   Serial.begin(9600);
 }
 

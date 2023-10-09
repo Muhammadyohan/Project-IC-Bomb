@@ -99,7 +99,6 @@ void musicLED() {
       analogWrite(bluePin, blueValue);
 
       colorIndex = (colorIndex + 1) % NUM_COLORS; // เปลี่ยนค่าสีไปสีถัดไป
-    
       brightness = brightness - fadeBright;
       if (brightness <= 0 || brightness >= 255) {
         fadeBright = -fadeBright; // เปลี่ยนทิศทางการเพิ่มหรือลดความสว่าง

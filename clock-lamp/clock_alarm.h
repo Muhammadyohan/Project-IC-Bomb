@@ -1,6 +1,7 @@
 #define HOUR 0
 #define MINUTE 1
 #include "read_switch.h"
+#include "buzzer.h"
 
 uint8_t clock_alarming = 0;
 
@@ -60,10 +61,11 @@ uint8_t CLOCK_ALARM_CHECK_AND_HANDLE() {
     
     Serial.println("CLock Alarm!");
     do {
-      // buzzMelody();
+      Playbuzz();
       checkSw = read_switch();
     } while (checkSw == 0);
     clock_alarming = 0;
+    buttonPress = true;
     Serial.println("Clock cancel Alarming!");
   }
 }
