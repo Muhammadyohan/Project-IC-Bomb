@@ -98,10 +98,15 @@ void DISP_CLOCK() {
 }
 
 //Temperature display function 
+unsigned long tempReadDelayPreviousTime = 0;
 void DISP_TEMP() {
-  //read temperature from dht11
-  int temp = dht11.readTemperature();
-  if (temp!= DHT11::ERROR_CHECKSUM && temp != DHT11::ERROR_TIMEOUT) {
+  int temp;
+  //read temperature from dht11 (read dealy = 1 sec.)
+  if(millis() - tempReadDelayPreviousTime > 1000) {
+    tempReadDelayPreviousTime = millis();
+    temp = dht11.readTemperature();
+  }
+  if (temp != DHT11::ERROR_CHECKSUM && temp != DHT11::ERROR_TIMEOUT) {
     //split tens and units of temp
     tUnit = temp % 10;
     tTen = temp / 10;
@@ -110,5 +115,6 @@ void DISP_TEMP() {
     tm.display(0, tTen);
     tm.display(1, tUnit);
     tm.display(2, 12);
-  } else DISP_TEMP();
+  } else Serial.println(DHT11::getErrorString(temp));
+
 }
