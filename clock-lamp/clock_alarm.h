@@ -63,9 +63,11 @@ uint8_t CLOCK_ALARM_CHECK_AND_HANDLE() {
     do {
       Playbuzz();
       checkSw = read_switch();
-    } while (checkSw == 0);
+      if (checkSw != 0)
+        buttonPress = true;
+    } while (buttonPress == false);
     clock_alarming = 0;
-    buttonPress = true;
+    buttonPress = false;
     Serial.println("Clock cancel Alarming!");
   }
 }

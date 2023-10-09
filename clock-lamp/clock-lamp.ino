@@ -1,6 +1,5 @@
 #include "clock_alarm_modifying.h"
 #include "led_disp.h"
-#include "buzzer.h"
 
 void setup() {
   //-------------begin tm1637--------------- 

@@ -90,9 +90,8 @@
 #define NOTE_DS8 4978
 #define REST      0
 
+#define buzzPin 8 //Pin Buzzer
 
-int buzzPin = 8; //Pin Buzzer
-//Calculate Note and Keep length Note
 int tempo = 150; //Faster music
 
 //Calculate length Note in ms
@@ -106,7 +105,6 @@ int noteDuration = 0;
 bool isPlaying = true;
 bool buttonPress = false;
 unsigned long PreviousTime = 0;
-
 
 //Note Piano
 int melody[] = {
@@ -131,6 +129,7 @@ int melody[] = {
   NOTE_FS4,8, NOTE_G4,8, NOTE_A4,2,   
 };
 
+//Calculate Note and Keep length Note
 int notes = sizeof(melody) / sizeof(melody[0]) / 2;
 
 void buzzMelody() {
@@ -146,6 +145,11 @@ void buzzMelody() {
     delay(noteDuration);
     noTone(buzzPin);
     PreviousTime = millis();
+    checkSw = read_switch();
+    if (checkSw != 0) {
+      buttonPress = true;
+      break;
+    }
   }
 }
 
@@ -155,6 +159,5 @@ void Playbuzz(){
     buzzMelody();
   } else if (!isPlaying && millis() - PreviousTime > 30000) {
     isPlaying = true; // เริ่มเล่นเพลงอีกครั้งหลังจากผ่านไป 30 วินาที
-    buttonPress = false;
   }
 }
