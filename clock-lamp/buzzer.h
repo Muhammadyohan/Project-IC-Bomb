@@ -91,8 +91,6 @@
 #define REST      0
 #define buzzPin 8 //Pin Buzzer
 
-int buzzPin = 8; //Pin Buzzer
-
 bool buttonPress = false;
 int tempo = 150; //Faster music
 
