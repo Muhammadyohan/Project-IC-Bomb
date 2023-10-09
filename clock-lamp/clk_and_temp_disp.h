@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <TimeLib.h>
 #include <DS1307RTC.h>
-#include <DHT.h>
+#include <DHT11.h>
 #include "tm1637.h"
 #include "global_variables.h"
 
@@ -11,8 +11,7 @@
 #define DECREASE_MODE 2
 //define pin and type for dht11
 #define DHTPIN 7
-#define DHTTYPE DHT11
-DHT dht(DHTPIN, DHTTYPE);
+DHT11 dht11(DHTPIN);
 
 //declare functions
 void DISP_CLOCK();
@@ -99,14 +98,16 @@ void DISP_CLOCK() {
 //Temperature display function 
 void DISP_TEMP() {
   //read temperature from dht11
-  int temp = dht.readTemperature();
-  //split tens and units of temp
-  tUnit = temp % 10;
-  tTen = temp / 10;
+  int temp = dht11.readTemperature();
+  if (temp!= DHT11::ERROR_CHECKSUM && temp != DHT11::ERROR_TIMEOUT) {
+    //split tens and units of temp
+    tUnit = temp % 10;
+    tTen = temp / 10;
 
-  //temperature display use tm.display(position, character) of tm1637
-  tm.display(0, tTen);
-  tm.display(1, tUnit);
-  tm.point(0);
-  tm.display(2, 12);
+    //temperature display use tm.display(position, character) of tm1637
+    tm.display(0, tTen);
+    tm.display(1, tUnit);
+    tm.point(0);
+    tm.display(2, 12);
+  } else {Serial.println(DHT11::getErrorString(temp));}
 }

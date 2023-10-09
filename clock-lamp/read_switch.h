@@ -16,9 +16,6 @@ uint8_t read_switch() {
                 do {
                     tmp = PCF8574_read(PCF_ADDR);
                 } while (!(tmp & mask));
-                Serial.print("Switch ");
-                Serial.print(i + 1);
-                Serial.println(" pressed");
                 return i + 1;
             }
         }
