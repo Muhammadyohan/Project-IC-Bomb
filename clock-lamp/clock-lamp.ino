@@ -64,6 +64,7 @@ void loop() {
         if (isModClkAlarmMode) {
           CLOCK_ALARM_WRITE(HOUR, tmp_hour_clk_alarm);
           CLOCK_ALARM_WRITE(MINUTE, tmp_minute_clk_alarm);
+          //EEPROM_scan_previous_and_write_alarm_time(tmp_hour_clk_alarm, tmp_minute_clk_alarm);
           edit_allow = true;
           isModClkAlarmMode = false;
         }
