@@ -5,3 +5,6 @@ bool edit_allow = true;
 bool isModClkMode = false;
 bool isModClkAlarmMode = false;
 uint8_t modModeSel = 1;
+
+//Variables for print test
+unsigned long testPrintPreviousTime = 0;

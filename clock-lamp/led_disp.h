@@ -16,24 +16,18 @@ int colorIndex = 0;
 int fadeBright = 10; // Faster Brightness
 int colors[NUM_COLORS][3];
 int swMode = 0;
+uint8_t testSw;
 
 bool isMusicPlaying = false;
 bool isMusicLEDEnabled = false;
 
+unsigned long printThresholdTime = 0;
+uint8_t readSwForBreak;
+
 // One Tone Color
 void defaultLED() {
-  checkSw = read_switch();
-  Serial.println(checkSw);
-  Serial.println("-----------------");
-  if (checkSw == 0) { 
-    if (swMode < 4){
-      swMode++;
-      Serial.print(swMode);
-    }else{ 
-      swMode = 1;
-    }
-  } 
-
+  swMode++;
+  if(swMode>4) swMode = 1;
   switch (swMode) {
     case 1: // White Color
       redValue = 255;
@@ -70,29 +64,51 @@ void defaultLED() {
 }
 
 // RGB FOR MUSIC PUB PUB PUB
-void musicLED() {
-  if (!isMusicLEDEnabled){
+uint8_t musicLED() {
     int sensorValue = analogRead(soundSensorPin);
-    Serial.println(sensorValue);
+    if(millis() - printThresholdTime > 5000) {
+      printThresholdTime = millis();
+      Serial.println(sensorValue);
+    }
     if (sensorValue >= analogMax || sensorValue < analogMin) {
       
       // Brightness depends on sensorValue
       brightness = map(sensorValue, analogMin, analogMax, 0, 255);
 
       //Random Value RGB    
-      for (int i = 0; i < NUM_COLORS; i++) {
-      colors[i][0] = map(i, NUM_COLORS - 1, 255, 0,  0); 
-      colors[i][1] = map(i, NUM_COLORS - 1, 0, 255,  0); 
-      colors[i][2] = map(i, NUM_COLORS - 1, 0, 0,  255);
-      }
+       for (int i = 0; i < NUM_COLORS; i++) {
+         colors[i][0] = map(i, 0, NUM_COLORS - 1, 255, 0); 
+         colors[i][1] = map(i, 0, NUM_COLORS - 1, 0, 255); 
+         colors[i][2] = 200;
+         //Switch 5 or 6 preessed
+         checkSw = read_switch();
+         if (checkSw != 0) {
+          swVal = checkSw;
+          switch (swVal)
+          {
+            case 5:
+              defaultLED();
+              isMusicLEDEnabled = false;
+              analogWrite(redPin, 0);
+              analogWrite(greenPin, 0);
+              analogWrite(bluePin, 0);
+              return;
+              break;
 
-      // for (int i = 0; i < NUM_COLORS; i++) {
-      // colors[i][0] = map(i, 0, NUM_COLORS - 1, 255, 0); 
-      // colors[i][1] = map(i, 0, NUM_COLORS - 1, 0, 255); 
-      // colors[i][2] = 125; 
-      // }
-          
-      isMusicPlaying = true;
+            case 6:
+              isMusicLEDEnabled = false;
+              analogWrite(redPin, 0);
+              analogWrite(greenPin, 0);
+              analogWrite(bluePin, 0);
+              return;
+              break;
+            
+            default:
+              break;
+          }
+        }  //stored return value of read_switch()
+      }
+        isMusicPlaying = true;
       } else {
       if (isMusicPlaying) {
         analogWrite(redPin, 0);
@@ -116,7 +132,9 @@ void musicLED() {
         brightness = brightness - fadeBright;
         if (brightness <= 0 || brightness >= 255) {
           fadeBright = -fadeBright; // Invert Bright Value
-      }
     }
   }
 }
+
+
+

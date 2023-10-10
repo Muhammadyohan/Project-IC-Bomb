@@ -79,14 +79,14 @@ void loop() {
       case 5: //Increase Number Button when on Clock Modifying 
         if (isModClkMode) MOD_CLOCK(modModeSel, INCREASE_MODE);
         else if (isModClkAlarmMode) MOD_CLOCK_ALARM(modModeSel, INCREASE_MODE);
-        else {defaultLED();
-        }break;
+        else defaultLED();
+        break;
 
       case 6: //Decrease Number Button when on Clock Modifying 
         if (isModClkMode) MOD_CLOCK(modModeSel, DECREASE_MODE);
         else if (isModClkAlarmMode) MOD_CLOCK_ALARM(modModeSel, DECREASE_MODE);
-        else { musicLED();
-        }break;
+        else isMusicLEDEnabled = !isMusicLEDEnabled;
+        break;
 
       default: break;
     }
@@ -103,4 +103,7 @@ void loop() {
     DISP_CLOCK_TEMP(); //Clock and Temperater Display
     CLOCK_ALARM_CHECK_AND_HANDLE(); //Check clock alarm and handle
   }
+  if (isMusicLEDEnabled) {
+    musicLED();
+  } 
 }
