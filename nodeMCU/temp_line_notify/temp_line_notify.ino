@@ -6,7 +6,7 @@ SoftwareSerial NodeMCU = SoftwareSerial(D1, D2);
 
 #define SSID        "Yohun"      
 #define PASSWORD    "yyyyyyyy"     
-#define LINE_TOKEN  "Secret Token"  
+#define LINE_TOKEN  "TEkaj9HFTPoPXvpOPfC1hPAUdGTuHdJ0lfFBoomEtZ4"  
 
 void setup() {
   NodeMCU.begin(57600);
