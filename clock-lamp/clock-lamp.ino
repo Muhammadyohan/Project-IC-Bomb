@@ -64,6 +64,7 @@ void loop() {
         if (isModClkAlarmMode) {
           CLOCK_ALARM_WRITE(HOUR, tmp_hour_clk_alarm);
           CLOCK_ALARM_WRITE(MINUTE, tmp_minute_clk_alarm);
+          //EEPROM_scan_previous_and_write_alarm_time(tmp_hour_clk_alarm, tmp_minute_clk_alarm);
           edit_allow = true;
           isModClkAlarmMode = false;
         }
@@ -79,13 +80,13 @@ void loop() {
       case 5: //Increase Number Button when on Clock Modifying 
         if (isModClkMode) MOD_CLOCK(modModeSel, INCREASE_MODE);
         else if (isModClkAlarmMode) MOD_CLOCK_ALARM(modModeSel, INCREASE_MODE);
-        else {}
+        else defaultLED();
         break;
 
       case 6: //Decrease Number Button when on Clock Modifying 
         if (isModClkMode) MOD_CLOCK(modModeSel, DECREASE_MODE);
         else if (isModClkAlarmMode) MOD_CLOCK_ALARM(modModeSel, DECREASE_MODE);
-        else {}
+        else isMusicLEDEnabled = !isMusicLEDEnabled;
         break;
 
       default: break;
@@ -103,4 +104,7 @@ void loop() {
     DISP_CLOCK_TEMP(); //Clock and Temperater Display
     CLOCK_ALARM_CHECK_AND_HANDLE(); //Check clock alarm and handle
   }
+  if (isMusicLEDEnabled) {
+    musicLED();
+  } 
 }
