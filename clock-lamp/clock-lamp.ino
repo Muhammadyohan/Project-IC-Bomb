@@ -3,6 +3,7 @@
 #include "EEPROM.h"
 
 void setup() {
+  Serial.begin(9600);
   //-------------begin tm1637--------------- 
   tm.init();
   //set brightness of tm1637 led; 0-7
@@ -20,14 +21,23 @@ void setup() {
 
   //-----------------------------EEPROM-----------------------------
   // EEPROM_clear_all_data();
-  // EEPROM_first_write_alarm_time(0x00, 0x00);
-  // tmp_hour_clk_alarm = read_hour_alarm_time_in_EEPROM();
-  // tmp_minute_clk_alarm = read_minute_alarm_time_in_EEPROM();
-  // CLOCK_ALARM_WRITE(HOUR, tmp_hour_clk_alarm);
-  // CLOCK_ALARM_WRITE(MINUTE, tmp_minute_clk_alarm);
+  // EEPROM_first_write_alarm_time(23, 59);
 
+  tmp_hour_clk_alarm = read_hour_alarm_time_in_EEPROM();
+  tmp_minute_clk_alarm = read_minute_alarm_time_in_EEPROM();
 
-  Serial.begin(9600);
+  CLOCK_ALARM_WRITE(HOUR, tmp_hour_clk_alarm);
+  CLOCK_ALARM_WRITE(MINUTE, tmp_minute_clk_alarm);
+
+  // EEPROM_scan_previous_and_write_alarm_time(23, 59);
+  
+  // display_all_data_in_EEPROM();
+  // Scan_all_data_in_EEPROM();
+
+  // Serial.print("Found Hour = ");
+  // Serial.println(tmp_hour_clk_alarm);
+  // Serial.print("Found Minute = ");
+  // Serial.println(tmp_minute_clk_alarm);
 }
 
 void loop() {
@@ -64,7 +74,7 @@ void loop() {
         if (isModClkAlarmMode) {
           CLOCK_ALARM_WRITE(HOUR, tmp_hour_clk_alarm);
           CLOCK_ALARM_WRITE(MINUTE, tmp_minute_clk_alarm);
-          //EEPROM_scan_previous_and_write_alarm_time(tmp_hour_clk_alarm, tmp_minute_clk_alarm);
+          EEPROM_scan_previous_and_write_alarm_time(tmp_hour_clk_alarm, tmp_minute_clk_alarm);
           edit_allow = true;
           isModClkAlarmMode = false;
         }

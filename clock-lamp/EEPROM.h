@@ -80,13 +80,33 @@ void update_if_data_changed(uint16_t addr, uint8_t data)
     EEPROM_Erase_and_Write1B(addr, data);
 }
 
+void Scan_all_data_in_EEPROM() {
+  uint16_t i;
+  uint8_t d; 
+  uint8_t found = 0;
+  for (i=0;i<1024;i++)
+  {
+    d = EEPROM_read1byte(i);
+    if (d != 0xFF) {
+      found++;
+      Serial.print("found data ");
+      Serial.print(d);
+      Serial.print(" on address ");
+      Serial.print("[");
+      Serial.print(i);
+      Serial.println("]");
+    }
+  }
+  if (found == 0) Serial.println("No data found");
+}
+
 void EEPROM_clear_all_data() {
   for (uint16_t i = 0; i<1024; i++) EEPROM_Erase_only(i);
 }
 
 void EEPROM_first_write_alarm_time(uint8_t hour, uint8_t minute) {
-  EEPROM_Write_to_Empty_location(1023, minute);
-  EEPROM_Write_to_Empty_location(1022, hour);
+  EEPROM_Write_to_Empty_location(1, minute);
+  EEPROM_Write_to_Empty_location(0, hour);
 }
 
 //***************************Wear level write***************************
@@ -113,6 +133,7 @@ void EEPROM_scan_previous_and_write_alarm_time(uint8_t hour, uint8_t minute) {
           EEPROM_Erase_only(data_location); //delete previous data before write
           data_location = (data_location + 1023) % 1024;
           EEPROM_Write_to_Empty_location(data_location, minute);
+          i = 1024;
         // If data is first scanned on address 0
         // But none data on address 1023
         // So It's Hour data on address 0
@@ -127,6 +148,7 @@ void EEPROM_scan_previous_and_write_alarm_time(uint8_t hour, uint8_t minute) {
           EEPROM_Erase_only(data_location); //delete previous data before write
           data_location = (data_location + 1023) % 1024;
           EEPROM_Write_to_Empty_location(data_location, minute);
+          i = 1024;
         }
       // If data Scanned any adress except adrees 0
       } else {
@@ -140,6 +162,7 @@ void EEPROM_scan_previous_and_write_alarm_time(uint8_t hour, uint8_t minute) {
       EEPROM_Erase_only(data_location); //delete previous data before write
       data_location = (data_location + 1023) % 1024;
       EEPROM_Write_to_Empty_location(data_location, minute);
+      i = 1024;
       }
     }
   }
