@@ -63,8 +63,6 @@ void loop() {
 }
 
 void checkWifi() {
-  WiFi.begin(SSID, PASSWORD);
-  Serial.printf("WiFi connecting to %s\n",  SSID);
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print("WiFi not connected!");
     delay(1000);
