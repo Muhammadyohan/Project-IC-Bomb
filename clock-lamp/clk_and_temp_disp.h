@@ -4,6 +4,7 @@
 #include <DHT11.h>
 #include "tm1637.h"
 #include "global_variables.h"
+#include "transmit_temp_data.h"
 
 //define for modify mode of clock and clock alarm
 #define IDLE_MODE 0
@@ -105,6 +106,7 @@ void DISP_TEMP() {
   if(millis() - tempReadDelayPreviousTime > 1000) {
     tempReadDelayPreviousTime = millis();
     temp = dht11.readTemperature();
+    send_data_to_odroidC4(temp);
   }
   if (temp != DHT11::ERROR_CHECKSUM && temp != DHT11::ERROR_TIMEOUT) {
     //split tens and units of temp

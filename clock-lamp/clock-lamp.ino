@@ -3,6 +3,7 @@
 #include "EEPROM.h"
 
 void setup() {
+  UnoSerial.begin(115200);
   Serial.begin(9600);
   //-------------begin tm1637--------------- 
   tm.init();
@@ -18,6 +19,9 @@ void setup() {
   pinMode(bluePin, OUTPUT);
 
   pinMode(buzzPin, OUTPUT);
+
+  pinMode(rxPin, INPUT);
+  pinMode(txPin, OUTPUT);
 
   //-----------------------------EEPROM-----------------------------
   // EEPROM_clear_all_data();
