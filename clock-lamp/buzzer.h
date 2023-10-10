@@ -140,7 +140,7 @@ void buzzMelody() {
       noteDuration = (wholenote) / divider;
     } else if (divider < 0) {
       noteDuration = (wholenote) / abs(divider);
-      noteDuration *= 1.5; 
+      noteDuration *= 0.1; 
     }
     tone(buzzPin, melody[thisNote], noteDuration * 1);
     delay(noteDuration);
