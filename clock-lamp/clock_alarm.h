@@ -48,20 +48,10 @@ uint8_t CLOCK_ALARM_CHECK_AND_HANDLE() {
 
   //handle clock alarm
   if (clock_alarming) {
-    //split tens and units of hour
-    mUnit = rtc.Minute % 10;
-    mTen = rtc.Minute / 10;
-    hUnit = rtc.Hour % 10;
-    hTen = rtc.Hour / 10;
-    tm.display(0, hTen);
-    tm.display(1, hUnit);
-    tm.display(2, mTen);
-    tm.display(3, mUnit);
-    tm.point(1);
-    
     Serial.println("CLock Alarm!");
     do {
       Playbuzz();
+      DISP_CLOCK();
       checkSw = read_switch();
       if (checkSw != 0)
         buttonPress = true;

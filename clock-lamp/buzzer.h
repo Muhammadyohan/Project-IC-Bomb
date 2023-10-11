@@ -146,6 +146,7 @@ void buzzMelody() {
     delay(noteDuration);
     noTone(buzzPin);
     PreviousTime = millis();
+    DISP_CLOCK();
     checkSw = read_switch();
     if (checkSw != 0) {
       buttonPress = true;

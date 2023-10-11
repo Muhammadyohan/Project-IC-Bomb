@@ -11,7 +11,7 @@ uint8_t read_switch() {
     for (int i = 0; i < 6; i++) {
         uint8_t mask = 1 << i;
         if (!(tmp & mask)) {
-            if (millis() - swPreviousTime > 50) {
+            if (millis() - swPreviousTime > 100) {
                 swPreviousTime = millis();
                 do {
                     tmp = PCF8574_read(PCF_ADDR);

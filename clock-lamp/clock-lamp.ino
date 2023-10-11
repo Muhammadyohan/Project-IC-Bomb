@@ -116,9 +116,7 @@ void loop() {
       MOD_CLOCK_ALARM(modModeSel, IDLE_MODE);
   } else {
     DISP_CLOCK_TEMP(); //Clock and Temperater Display
-    CLOCK_ALARM_CHECK_AND_HANDLE(); //Check clock alarm and handle
+    CLOCK_ALARM_CHECK_AND_HANDLE(); //Check clock alarm and handle0
+    if (isMusicLEDEnabled) musicLED();
   }
-  if (isMusicLEDEnabled) {
-    musicLED();
-  } 
 }
