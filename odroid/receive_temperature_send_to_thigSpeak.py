@@ -32,9 +32,10 @@ while True :
     node_ended_time = time.time()
     if node_ended_time - node_ended_time > 1 :
         node_started_time = time.time()
-        wpi.serialPuts(NodeMCU, temp_to_nodeMCU)
+        wpi.serialPuts(NodeMCU, temp_to_nodeMCU+"\n")
 
 wpi.serialClose(Uno)
+wpi.serialClose(NodeMCU)
 
 
 
