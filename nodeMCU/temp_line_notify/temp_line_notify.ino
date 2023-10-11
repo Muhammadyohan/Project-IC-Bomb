@@ -2,7 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <TridentTD_LineNotify.h>
 
-SoftwareSerial NodeMCU = SoftwareSerial(D1, D2);
+SoftwareSerial NodeMCU = SoftwareSerial(D1, D2); //RX | TX
 
 #define SSID        "Yohun"      
 #define PASSWORD    "yyyyyyyy"     
