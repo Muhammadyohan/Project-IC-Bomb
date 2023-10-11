@@ -20,6 +20,7 @@ tmp_received_data = 0
 temp_from_uno = ""
 
 while True:
+    temp_from_uno = ""
     while wpi.serialDataAvail(Uno):
         try:
             received_byte = wpi.serialGetchar(Uno)
@@ -40,7 +41,6 @@ while True:
         if (tmp_received_data//10 < 1):
             tmp_received_data = received_data
         received_data = tmp_received_data
-        temp_from_uno = ""
         print(received_data)
 
     ended_time = time.time()

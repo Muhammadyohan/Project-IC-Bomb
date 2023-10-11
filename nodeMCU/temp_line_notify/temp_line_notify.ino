@@ -1,17 +1,26 @@
-#include <SoftwareSerial.h>
+#include "ThingSpeak.h"
 #include <ESP8266WiFi.h>
 #include <TridentTD_LineNotify.h>
 
-SoftwareSerial NodeMCU = SoftwareSerial(D1, D2); //RX | TX
-
 #define SSID        "Yohun"      
 #define PASSWORD    "yyyyyyyy"     
-#define LINE_TOKEN  "TEkaj9HFTPoPXvpOPfC1hPAUdGTuHdJ0lfFBoomEtZ4"  
+#define LINE_TOKEN  "TEkaj9HFTPoPXvpOPfC1hPAUdGTuHdJ0lfFBoomEtZ4"
+WiFiClient  client;
+int statusCode;
+
+//---------Channel Details---------//
+unsigned long counterChannelNumber = 2298963;            // Channel ID
+const char * myCounterReadAPIKey = "KTYHSAREQE7LT9HL"; // Read API Key
+const int FieldNumber1 = 1;  // The field you wish to read
+const int FieldNumber2 = 2;  // The field you wish to read
+//-------------------------------//
 
 void setup() {
-  NodeMCU.begin(57600);
-  Serial.begin(9600); Serial.println();
+  Serial.begin(115600); Serial.println();
   Serial.println(LINE.getVersion());
+
+  WiFi.mode(WIFI_STA);
+  ThingSpeak.begin(client);
 
   WiFi.begin(SSID, PASSWORD);
   Serial.printf("WiFi connecting to %s\n",  SSID);
@@ -32,32 +41,36 @@ unsigned long notifyPreviousTime = 0;
 
 void loop() {
   checkWifi();
-
-  //Get data from Odroid C4
-  while(NodeMCU.available()>0) {
-    c = NodeMCU.read();
-    if(c=='\n') {break;}
-    else {temp_data_in += c;}
+  //---------------- Channel 1 ----------------//
+  long temp = ThingSpeak.readLongField(counterChannelNumber, FieldNumber1, myCounterReadAPIKey);
+  statusCode = ThingSpeak.getLastReadStatus();
+  if (statusCode == 200) {
+    Serial.print("Temperature: ");
+    Serial.println(temp);
+  } else {
+    Serial.println("Unable to read channel / No internet connection");
   }
-  if(c=='\n') {
-    Serial.print("Temperature = ");
-    Serial.println(temp_data_in);
-
-    //Notify every 3 hours
-    if (millis() - notifyPreviousTime > 10,800,000) {
-      notifyPreviousTime = millis();
-      LINE.notify("Temperature = " + temp_data_in + " C");
-    }
-
-    //Reset the variable
-    c = 0;
-    temp_data_in = "";
+  delay(100);
+  //-------------- End of Channel 1 -------------//
+    //Notify every 5 minutes 
+  if (millis() - notifyPreviousTime > 300000) {
+    String temp_data = String(temp);
+    notifyPreviousTime = millis();
+    LINE.notify("Temperature = " + temp_data + " C");
   }
 }
 
 void checkWifi() {
-  while (WiFi.status() != WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECTED) {
     Serial.print("WiFi not connected!");
-    delay(1000);
+    Serial.print("Connecting to ");
+    Serial.print(SSID);
+    Serial.println(" ....");
+    while (WiFi.status() != WL_CONNECTED)
+    {
+      WiFi.begin(SSID, PASSWORD);
+      delay(5000);
+    }
+    Serial.println("Connected to Wi-Fi Succesfully.");
   }
 }
