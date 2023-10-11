@@ -43,12 +43,15 @@ while True:
         received_data = tmp_received_data
         print(received_data)
 
-    ended_time = time.time()
-    if ended_time - started_time > 15:
-        started_time = time.time()
-        f = urllib.request.urlopen(baseURL + str(received_data))
-        print("sent data to thing thingspeak")
-        f.read()
-        f.close()
+    try:
+        ended_time = time.time()
+        if ended_time - started_time > 15:
+            started_time = time.time()
+            f = urllib.request.urlopen(baseURL + str(received_data))
+            print("sent data to thing thingspeak")
+            f.read()
+            f.close()
+    except Exception as e:
+        print(f"An exception occurred: {e}")
 
 wpi.serialClose(Uno)

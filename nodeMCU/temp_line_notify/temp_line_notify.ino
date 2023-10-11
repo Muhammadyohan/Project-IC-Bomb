@@ -52,8 +52,8 @@ void loop() {
   }
   delay(100);
   //-------------- End of Channel 1 -------------//
-    //Notify every 5 minutes 
-  if (millis() - notifyPreviousTime > 300000) {
+    //Notify every 5 minutes ---> 300000
+  if (millis() - notifyPreviousTime > 30000) {
     String temp_data = String(temp);
     notifyPreviousTime = millis();
     LINE.notify("Temperature = " + temp_data + " C");

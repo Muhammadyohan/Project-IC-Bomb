@@ -1,3 +1,0 @@
-ไลบารีที่ต้องแอดเพิ่มที่นอกจากของแลปคือ 
-1. tm1637 ชื่อ Grove 4-Digit Display ของ Seeed Studio
-2. dht11 ชื่อ DHT11 ของ Dhruba Saha
